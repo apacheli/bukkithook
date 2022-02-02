@@ -1,0 +1,5 @@
+name: BukkitHook
+version: 0.0.1
+author: Apacheli
+main: com.Apacheli.BukkitHook.BukkitHook
+api-version: 1.14
