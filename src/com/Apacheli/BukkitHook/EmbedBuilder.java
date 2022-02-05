@@ -30,6 +30,12 @@ public class EmbedBuilder {
         return this;
     }
 
+    public EmbedBuilder description(String desc) {
+        json.put("description", desc);
+
+        return this;
+    }
+
     public EmbedBuilder footer(String text) {
         JSONObject footer = new JSONObject();
         footer.put("text", text);

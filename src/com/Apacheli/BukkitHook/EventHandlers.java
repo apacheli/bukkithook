@@ -2,17 +2,22 @@ package com.Apacheli.BukkitHook;
 
 import org.bukkit.Location;
 import org.bukkit.Server;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.world.WorldSaveEvent;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import static com.Apacheli.BukkitHook.Webhook.executeWebhook;
+import static org.bukkit.Bukkit.broadcastMessage;
 import static org.bukkit.Bukkit.getServer;
 
 public class EventHandlers implements Listener {
@@ -80,7 +85,33 @@ public class EventHandlers implements Listener {
         EmbedBuilder embed = new EmbedBuilder()
                 .author(event.getDeathMessage(), "https://minotar.net/helm/" + player.getDisplayName())
                 .color(0xE6CB1C)
-                .footer(String.format("Died at XYZ: %s / %s / %s", x, y, z));
+                .footer(String.format("Died at XYZ: %s / %s / %s | Dimension: %s", x, y, z, player.getWorld().getName()));
+
+        executeWebhook(webhookUrl, embed.build());
+    }
+
+    @EventHandler
+    public void onEntityDeathEvent(EntityDeathEvent event) {
+        if (event.getEntityType() != EntityType.VILLAGER) {
+            return;
+        }
+
+        LivingEntity entity = event.getEntity();
+
+        Location location = entity.getLocation();
+        int x = location.getBlockX();
+        int y = location.getBlockY();
+        int z = location.getBlockZ();
+
+        String villagerName = entity.getName();
+
+        String message = String.format("%s died at XYZ: %s / %s / %s", villagerName, x, y, z);
+
+        broadcastMessage(message);
+
+        EmbedBuilder embed = new EmbedBuilder()
+                .author(message)
+                .color(0xBD2DDA);
 
         executeWebhook(webhookUrl, embed.build());
     }

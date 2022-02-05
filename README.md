@@ -13,3 +13,8 @@ webhook_url: "WEBHOOK_URL_HERE"
 You must put your Discord webhook's URL there.
 
 [See the releases](https://github.com/apacheli/bukkithook/releases) for the latest `.jar` download.
+
+## Dependencies
+
+- org.bukkit
+- org.json

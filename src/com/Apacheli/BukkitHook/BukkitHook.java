@@ -3,6 +3,7 @@ package com.Apacheli.BukkitHook;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import static com.Apacheli.BukkitHook.Webhook.executeWebhook;
@@ -30,7 +31,10 @@ public class BukkitHook extends JavaPlugin {
 
         Server server = getServer();
 
-        server.getPluginManager().registerEvents(new EventHandlers(webhookUrl), this);
+        PluginManager pluginManager = server.getPluginManager();
+
+        pluginManager.registerEvents(new EventHandlers(webhookUrl), this);
+        pluginManager.registerEvents(new RaidEventHandlers(webhookUrl), this);
 
         server.getConsoleSender().sendMessage(ChatColor.GREEN + "Enabled BukkitHook.");
 
